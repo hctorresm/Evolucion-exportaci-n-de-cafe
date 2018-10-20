@@ -10,8 +10,7 @@ se propone construir una visualización interactiva con el fin de estudiar a pro
 
 # Tecnologías usadas
 
-IDE: Sublime text
-Javascript d3 v5.0
+IDE: Sublime text - Javascript d3 v5.0
 
 
 # Link de la página
