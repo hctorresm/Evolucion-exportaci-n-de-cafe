@@ -15,6 +15,8 @@ IDE: Sublime text - Javascript d3 v5.0
 
 # Link de la página
 
+https://hctorresm.github.io/Evolucion-exportaci-n-de-cafe/
+
 # Presentación 
 
 https://docs.google.com/presentation/d/e/2PACX-1vSUMwq71Sd0N6KsECg0b3NFx9hGKS4Ywn-MUdIsGL0taWeB7dS8E5-tbCyeLZ1dGo5RhCuPdyKDSxlx/pub?start=false&loop=false&delayms=3000&fbclid=IwAR0AF-3suN9buvHXaoX3e5-dAQfi5PC7x_cicGcEiza58uiyZwiTrToCl7g&slide=id.gc6f90357f_0_0
