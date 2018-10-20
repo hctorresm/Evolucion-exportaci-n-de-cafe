@@ -1,6 +1,3 @@
-# Evolucion-exportaci-n-de-cafe
-Exportación de cafe en Colombia
-
 
 # Repositorio
 
