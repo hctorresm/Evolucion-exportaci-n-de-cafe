@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style> /* set the CSS */
+
+
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Montserrat, sans-serif;
+  font-wight: 500;
+  font-size: 12px;
+}
+
+.root{
+  display: flex;
+  }
+
+.container {
+  float: left;
+}
+
+
+.axis text {
+  font-weight: bold;
+}
+
+.y-axis text {
+  text-anchor: end;
+}
+
+.axis path {
+  display: none;
+}
+
+.axis line {
+  stroke-opacity: 0.3;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.legend-item {
+  cursor: pointer;
+}
+
+.legend-item:hover {
+  text-decoration: underline;
+}
+
+.extra-options-container {
+  font-size: 12px;
+  margin-top: 5px;
+  display: flex;
+  width: 100px;
+  margin-left: 57px;
+  justify-content: space-between;
+}
+
+.hide-all-option, .show-all-option {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hide-all-option:hover, .show-all-option:hover {
+  text-decoration: none;
+}
+
+.voronoi path {
+  fill: none;
+  pointer-events: all;
+}
+
+.voronoi-show path {
+  stroke: red;
+  stroke-opacity: 0.2;
+}
+
+.region-hover {
+  stroke: #000;
+  stroke-width: 4px;
+}
+
+.actions {
+  display: flex;
+  width: 681px;
+  padding-left: 49px;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.title {
+  padding-right: 40px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 27px;
+  margin-top: 21px;
+  padding-left: 48px;
+  width: 718px;
+  box-sizing: border-box;
+}
+
+.preview {
+  position: relative;
+}
+
+.preview-rect {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.preview-axis.x-axis .tick:nth-child(2) text {
+  text-anchor: start;
+}
+
+.preview-axis.x-axis .tick:nth-child(3) text {
+  text-anchor: end;
+}
+
+</style>
+
+<body>
+
+<!-- load the d3.js library -->    
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@4.2.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@3.0.0-rc6"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3.19.2"></script>
+
+
+
+    <h1>
+        Evolución de la exportación de café en Colombia en distintos departamentos de Colombia
+    </h1>
+
+
+<ul>
+<li>Universidad de los Andes</li>
+<li>Maestría en ingeniería de información </li>
+<li>Visual analytics</li>
+<li>Autor: <a target="_blank" href="https://www.linkedin.com/in/harry-cristhian-torres-moreno-5bb53370/">Harry Cristhian Torres Moreno</a> </li>
+<li>Código: 201727422 </li>
+
+
+
+</ul>
+
+<hr/>
+
+
+
+<h2> Introducción</h2>
+<p>
+Colombia es uno de los países que se ha caracterizado por su café, el Ministerio de Agricultura y Desarrollo Rural se ha encargado de recopilar toda la información asociada a las exportaciones de Café, lo anterior con el fin de cuantificar e valor en miles de pesos producto del café por departamento. </p>
+<p>
+Teniendo en cuenta lo anterior, se propone construir una visualización interactiva con el fin de estudiar a profundidad el comportamiento de las exportaciones de Café desde el año 2010 hasta el año 2018 con el objetivo de generar insights, los datos se encuentran disponibles en la página de <a target="_blank" href= "https://www.datos.gov.co/Agricultura-y-Desarrollo-Rural/Cadena-Productiva-Caf-Exportaciones/gzwq-vje7"> Datos abiertos de Colombia </a>.
+</p> 
+
+
+
+<h2> Metodología </h2>
+<ul>
+  <li> <strong>Datos:</strong> Los datos fueron obtenidos de  la página de <a target="_blank" href= "https://www.datos.gov.co/Agricultura-y-Desarrollo-Rural/Cadena-Productiva-Caf-Exportaciones/gzwq-vje7"> Datos abiertos de Colombia </a>, estos datos contienen el valor en miles de pesos de las exportaciones de Colombia por departamento desde Diciembre de 2009 hasta Mayo de 2018.</li>
+  <li> <strong>Procesamiento de los datos: </strong> Los datos fueron procesados en python, así mismo, se redondeó (al entero más cercano) la variable valor miles de pesos correspondiente a las exportaciones de Café. </li>
+  <li> <strong>Visualización: </strong> Para seleccionar la mejor visualización teniendo en cuenta el principio de expresividad y eficiencia, se utilizó como metodología el framework de Tamara (Tamara Munzner: Visualization Analysis and Design AK Peters 2014.) </li>
+  <li> <strong> Herramientas </strong>
+    <ul>
+    <li>Anaconda-Spyder, Python</li>
+    <li>Text Sublime, HTML, CSS, Javascript D3 v5.0</li>
+    <li>GitHub para el desplegue de la página </li>
+  </ul>
+</li>  
+</ul>
+
+<h2> Visualización 1</h2>
+<p> 
+A continnuación se presenta una visualización interactiva que permite identificar la tendencia (creciente o decreciente) que ha venido presentando la variable miles de pesos que proviene de las exportaciones de Café en 10 departamentos de Colombia,  a través de un gráfico de líneas desde el año 2010 hasta el año 2018, así mismo, se presenta la caracterización de esta visualización en función del framework de Tamara (what, why y how) </p>
+<h3> Caracterización What, Why How </h3>
+
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, temporal </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Valor en miles de pesos:</strong> Corresponde al valor en miles de pesos que proviene de las exportaciones café, este atributo es cuantitativo y secuencial.</li>
+                    <li> <strong>Departamento: </strong> Corresponde al departamento de donde surge la exportación, esta variable es categórica.</li>
+                    <li><strong> Fecha: </strong> Corresponde a la fecha en la cual se midió el valor en miles de pesos de las exportaciones, esta variable es cuantitativa y secuencial.</li> 
+                </ol>
+            </li>
+        </ul>
+    </li>
+    
+
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Resumir la tendencia que ha venido presentando las exportaciones de café por departamento desde el año 2010 hasta el año 2018. (Tamara: Summarize, Trends)  </li>
+        </ol>
+    </li>
+
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas: </strong></li>
+                 <ol>
+                  <li><strong>Línea</strong>: Cada línea representa las exportaciones por cada departamento, dichas exportaciones están medidas en miles de pesos. </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong>Color hue:</strong> Cada línea se puede distinguir mediante un color distinto, lo anterior con el objetivo de identificar el departamento</li>
+                    <li><strong> Express value attribute with aligned horizontal position: </strong> El atributo fecha se encuentra ubicado horizontalmente </li>
+                    <li> <strong> Express value attribute with aligned vertical position: </strong> El atributo valor miles de pesos se encuentra ubicado verticalmente</li>
+               </ol>
+            </li>
+        </ol>
+        <li> <strong> Interacción: </strong> Es posible realizar un zoom sobre el gráfico para poder observar más detalle un periodo de interés, así mismo, es posible ocultar (o mostrar) los valores asociados a un determinado departamento, en el video adjunto a este trabajo se explica la interacción del gráfico.</li>   
+    </li>
+
+</ul>
+
+<br/>
+
+
+    <div class="preview"></div>
+
+<div class="actions">
+    <button class="reset-zoom-button">Reset zoom</button>
+</div>
+
+<div class="root">
+    <div class="chart"></div>
+    <div class="legend"></div>
+</div>
+
+
+
+<script>
+
+d3.csv('https://raw.githubusercontent.com/hctorresm/Evolucion-exportaci-n-de-cafe/master/export_cafe_1026.csv').then(data => draw(data))
+
+const ENABLED_OPACITY = 1;
+const DISABLED_OPACITY = .2;
+
+const timeFormatter = d3.timeFormat('%d-%m-%Y');
+
+function draw(data) {
+  const margin = { top: 50, right: 20, bottom: 250, left: 100 };
+  const previewMargin = { top: 10, right: 10, bottom: 15, left: 30 };
+  const width =750- margin.left - margin.right ;
+  const height =525- margin.top - margin.bottom;
+
+  const ratio = 4;
+
+  const previewWidth = width / ratio;
+  const previewHeight = height / ratio;
+
+  const x = d3.scaleTime()
+    .range([0, width]);
+
+  const y = d3.scaleLinear()
+    .range([height, 0]);
+
+  let rescaledX = x;
+  let rescaledY = y;
+
+  const previewX = d3.scaleTime()
+    .range([0, previewWidth]);
+
+  const previewY = d3.scaleLinear()
+    .range([previewHeight, 0]);
+
+  const colorScale = d3.scaleOrdinal()
+    .range([
+      '#4c78a8',
+      '#9ecae9',
+      '#f58518',
+      '#ffbf79',
+      '#54a24b',
+      '#88d27a',
+      '#b79a20',
+      '#439894',
+      '#83bcb6'
+    ]);
+
+  const chartAreaWidth = width + margin.left + margin.right;
+  const chartAreaHeight = height + margin.left + margin.right;
+
+  const zoom = d3.zoom()
+    .scaleExtent([1, 10])
+    .translateExtent([[0, 0], [chartAreaWidth, chartAreaHeight]])
+    .on('start', () => {
+      hoverDot
+        .attr('cx', -5)
+        .attr('cy', 0);
+    })
+    .on('zoom', zoomed);
+
+  const svg = d3.select('.chart')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', 130+margin.top + margin.bottom)
+    .append('g')
+    .attr('transform', `translate(${ margin.left },${ margin.top })`);
+
+  data.forEach(function (d) {
+    d.date = new Date(d.date);
+    d.percent = +d.percent;
+  });
+
+  x.domain(d3.extent(data, d => d.date));
+  y.domain([0, d3.max(data, d => d.percent)]);
+  previewX.domain(d3.extent(data, d => d.date));
+  previewY.domain([0, d3.max(data, d => d.percent)]);
+  colorScale.domain(d3.map(data, d => d.regionId).keys());
+
+  const xAxis = d3.axisBottom(x)
+    .ticks((width + 2) / (height + 2) * 5)
+    .tickSize(-height - 6)
+    .tickPadding(10);
+
+  const xAxisPreview = d3.axisBottom(previewX)
+    .tickSize(4)
+    .tickValues(previewX.domain())
+    .tickFormat(d3.timeFormat('%b %Y'));
+
+  const yAxisPreview = d3.axisLeft(previewY)
+    .tickValues(previewY.domain())
+    .tickSize(3)
+    .tickFormat(d => Math.round(d) );
+
+  const yAxis = d3.axisRight(y)
+    .ticks(5)
+    .tickSize(7 + width)
+    .tickPadding(-11 - width)
+    .tickFormat(d => d );
+
+  const xAxisElement = svg.append('g')
+    .attr('class', 'axis x-axis')
+    .attr('transform', `translate(0,${ height + 6 })`)
+    .call(xAxis);
+
+  const yAxisElement = svg.append('g')
+    .attr('transform', 'translate(-7, 0)')
+    .attr('class', 'axis y-axis')
+    .call(yAxis);
+
+  svg.append('g')
+    .attr('transform', `translate(0,${ height })`)
+    .call(d3.axisBottom(x).ticks(0));
+
+  svg.append('g')
+    .call(d3.axisLeft(y).ticks(0));
+
+  svg.append('defs').append('clipPath')
+    .attr('id', 'clip')
+    .append('rect')
+    .attr('width', width)
+    .attr('height', height);
+
+  const nestByRegionId = d3.nest()
+    .key(d => d.regionId)
+    .sortKeys((v1, v2) => (parseInt(v1, 10) > parseInt(v2, 10) ? 1 : -1))
+    .entries(data);
+
+  const regionsNamesById = {};
+
+  nestByRegionId.forEach(item => {
+    regionsNamesById[item.key] = item.values[0].regionName;
+  });
+
+  const regions = {};
+
+  d3.map(data, d => d.regionId)
+    .keys()
+    .forEach(function (d, i) {
+      regions[d] = {
+        data: nestByRegionId[i].values,
+        enabled: true
+      };
+    });
+
+  const regionsIds = Object.keys(regions);
+
+  const lineGenerator = d3.line()
+    .x(d => rescaledX(d.date))
+    .y(d => rescaledY(d.percent));
+
+  const nestByDate = d3.nest()
+    .key(d => d.date)
+    .entries(data);
+
+  const percentsByDate = {};
+
+  nestByDate.forEach(dateItem => {
+    percentsByDate[dateItem.key] = {};
+
+    dateItem.values.forEach(item => {
+      percentsByDate[dateItem.key][item.regionId] = item.percent;
+    });
+  });
+
+  const legendContainer = d3.select('.legend');
+
+  const legendsSvg = legendContainer
+    .append('svg');
+
+  const legendsDate = legendsSvg.append('text')
+    .attr('visibility', 'hidden')
+    .attr('x', 0)
+    .attr('y', 10);
+
+  const legends = legendsSvg.attr('width', 210)
+    .attr('height', 353)
+    .selectAll('g')
+    .data(regionsIds)
+    .enter()
+    .append('g')
+    .attr('class', 'legend-item')
+    .attr('transform', (regionId, index) => `translate(0,${ index * 20 + 20 })`)
+    .on('click', clickLegendRectHandler);
+
+  const legendsValues = legends
+    .append('text')
+    .attr('x', 0)
+    .attr('y', 10)
+    .attr('class', 'legend-value');
+
+  legends.append('rect')
+    .attr('x', 58)
+    .attr('y', 0)
+    .attr('width', 12)
+    .attr('height', 12)
+    .style('fill', regionId => colorScale(regionId))
+    .select(function() { return this.parentNode; })
+    .append('text')
+    .attr('x', 78)
+    .attr('y', 10)
+    .text(regionId => regionsNamesById[regionId])
+    .attr('class', 'legend-text')
+    .style('text-anchor', 'start');
+
+  const extraOptionsContainer = legendContainer.append('div')
+    .attr('class', 'extra-options-container');
+
+  extraOptionsContainer.append('div')
+    .attr('class', 'hide-all-option')
+    .text('hide all')
+    .on('click', () => {
+      regionsIds.forEach(regionId => {
+        regions[regionId].enabled = false;
+      });
+
+      singleLineSelected = false;
+
+      redrawChart();
+    });
+
+  extraOptionsContainer.append('div')
+    .attr('class', 'show-all-option')
+    .text('show all')
+    .on('click', () => {
+      regionsIds.forEach(regionId => {
+        regions[regionId].enabled = true;
+      });
+
+      singleLineSelected = false;
+
+      redrawChart();
+    });
+
+  const linesContainer = svg.append('g')
+    .attr('clip-path', 'url(#clip)');
+
+  let singleLineSelected = false;
+
+  const voronoi = d3.voronoi()
+    .x(d => x(d.date))
+    .y(d => y(d.percent))
+    .extent([[0, 0], [width, height]]);
+
+  const hoverDot = svg.append('circle')
+    .attr('class', 'dot')
+    .attr('r', 3)
+    .attr('clip-path', 'url(#clip)')
+    .style('visibility', 'hidden');
+
+  let voronoiGroup = svg.append('g')
+    .attr('class', 'voronoi-parent')
+    .attr('clip-path', 'url(#clip)')
+    .append('g')
+    .attr('class', 'voronoi')
+    .on('mouseover', () => {
+      legendsDate.style('visibility', 'visible');
+      hoverDot.style('visibility', 'visible');
+    })
+    .on('mouseout', () => {
+      legendsValues.text('');
+      legendsDate.style('visibility', 'hidden');
+      hoverDot.style('visibility', 'hidden');
+    });
+
+  const zoomNode = d3.select('.voronoi-parent').call(zoom);
+
+  d3.select('.reset-zoom-button').on('click', () => {
+    rescaledX = x;
+    rescaledY = y;
+
+    d3.select('.voronoi-parent').transition()
+      .duration(750)
+      .call(zoom.transform, d3.zoomIdentity);
+  });
+
+  d3.select('#show-voronoi')
+    .property('disabled', false)
+    .on('change', function () {
+      voronoiGroup.classed('voronoi-show', this.checked);
+    });
+
+  const preview = d3.select('.preview')
+    .append('svg')
+    .attr('width', previewWidth + previewMargin.left + previewMargin.right)
+    .attr('height', previewHeight + previewMargin.top + previewMargin.bottom)
+    .append('g')
+    .attr('transform', `translate(${ previewMargin.left },${ previewMargin.top })`);
+
+  const previewContainer = preview.append('g');
+
+  preview.append('g')
+    .attr('class', 'preview-axis x-axis')
+    .attr('transform', `translate(0,${ previewHeight })`)
+    .call(xAxisPreview);
+
+  preview.append('g')
+    .attr('class', 'preview-axis y-axis')
+    .attr('transform', 'translate(0, 0)')
+    .call(yAxisPreview);
+
+  previewContainer.append('rect')
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', previewWidth)
+    .attr('height', previewHeight)
+    .attr('fill', '#dedede');
+  
+  const previewLineGenerator = d3.line()
+    .x(d => previewX(d.date))
+    .y(d => previewY(d.percent));
+
+  const draggedNode = previewContainer
+    .append('rect')
+    .data([{ x: 0, y: 0 }])
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', previewWidth)
+    .attr('height', previewHeight)
+    .attr('fill', 'rgba(250, 235, 215, 0.78)')
+    .call(d3.drag().on('drag', dragged));
+
+  redrawChart();
+
+  function redrawChart(showingRegionsIds) {
+    const enabledRegionsIds = showingRegionsIds || regionsIds.filter(regionId => regions[regionId].enabled);
+
+    const paths = linesContainer
+      .selectAll('.line')
+      .data(enabledRegionsIds);
+
+    paths.exit().remove();
+
+    if (enabledRegionsIds.length === 1) {
+      const previewPath = previewContainer
+        .selectAll('path')
+        .data(enabledRegionsIds);
+
+      previewPath.exit().remove();
+
+      previewPath
+        .enter()
+        .append('path')
+        .merge(previewPath)
+        .attr('class', 'line')
+        .attr('d', regionId => previewLineGenerator(regions[regionId].data)
+        )
+        .style('stroke', regionId => colorScale(regionId));
+    }
+
+    paths
+      .enter()
+      .append('path')
+      .merge(paths)
+      .attr('class', 'line')
+      .attr('id', regionId => `region-${ regionId }`)
+      .attr('d', regionId => lineGenerator(regions[regionId].data)
+      )
+      .style('stroke', regionId => colorScale(regionId));
+
+    legends.each(function(regionId) {
+      const opacityValue = enabledRegionsIds.indexOf(regionId) >= 0 ? ENABLED_OPACITY : DISABLED_OPACITY;
+
+      d3.select(this).attr('opacity', opacityValue);
+    });
+
+    const filteredData = data.filter(dataItem => enabledRegionsIds.indexOf(dataItem.regionId) >= 0);
+
+    const voronoiPaths = voronoiGroup.selectAll('path')
+      .data(voronoi.polygons(filteredData));
+
+    voronoiPaths.exit().remove();
+
+    voronoiPaths
+      .enter()
+      .append('path')
+      .merge(voronoiPaths)
+      .attr('d', d => (d ? `M${ d.join('L') }Z` : null))
+      .on('mouseover', voronoiMouseover)
+      .on('mouseout', voronoiMouseout)
+      .on('click', voronoiClick);
+  }
+
+  function clickLegendRectHandler(regionId) {
+    if (singleLineSelected) {
+      const newEnabledRegions = singleLineSelected === regionId ? [] : [singleLineSelected, regionId];
+
+      regionsIds.forEach(currentRegionId => {
+        regions[currentRegionId].enabled = newEnabledRegions.indexOf(currentRegionId) >= 0;
+      });
+    } else {
+      regions[regionId].enabled = !regions[regionId].enabled;
+    }
+
+    singleLineSelected = false;
+
+    redrawChart();
+  }
+
+  function voronoiMouseover(d) {
+    const transform = d3.zoomTransform(d3.select('.voronoi-parent').node());
+
+    legendsDate.text(timeFormatter(d.data.date));
+
+    legendsValues.text(dataItem => {
+      const value = percentsByDate[d.data.date][dataItem];
+
+      return value ? value  : 'Н/Д';
+    });
+
+    d3.select(`#region-${ d.data.regionId }`).classed('region-hover', true);
+
+    const previewPath = previewContainer
+      .selectAll('path')
+      .data([d.data.regionId]);
+
+    previewPath.exit().remove();
+
+    previewPath
+      .enter()
+      .append('path')
+      .merge(previewPath)
+      .attr('class', 'line')
+      .attr('d', regionId => previewLineGenerator(regions[regionId].data)
+      )
+      .style('stroke', regionId => colorScale(regionId));
+
+    hoverDot
+      .attr('cx', () => transform.applyX(x(d.data.date)))
+      .attr('cy', () => transform.applyY(y(d.data.percent)));
+  }
+
+  function voronoiMouseout(d) {
+    if (d) {
+      d3.select(`#region-${ d.data.regionId }`).classed('region-hover', false);
+    }
+  }
+
+  function voronoiClick(d) {
+    if (singleLineSelected) {
+      singleLineSelected = false;
+
+      redrawChart();
+    } else {
+      const regionId = d.data.regionId;
+
+      singleLineSelected = regionId;
+
+      redrawChart([regionId]);
+    }
+  }
+
+  function clamp(number, bottom, top) {
+    let result = number;
+
+    if (number < bottom) {
+      result = bottom;
+    }
+
+    if (number > top) {
+      result = top;
+    }
+
+    return result;
+  }
+
+  function dragged(d) {
+    const draggedNodeWidth = draggedNode.attr('width');
+    const draggedNodeHeight = draggedNode.attr('height');
+    const x = clamp(d3.event.x, 0, previewWidth - draggedNodeWidth);
+    const y = clamp(d3.event.y, 0, previewHeight - draggedNodeHeight);
+
+    d3.select(this)
+      .attr('x', d.x = x)
+      .attr('y', d.y = y);
+
+    zoomNode.call(zoom.transform, d3.zoomIdentity
+      .scale(currentTransformationValue)
+      .translate(-x * ratio, -y * ratio)
+    );
+  }
+
+  let currentTransformationValue = 1;
+
+  function zoomed() {
+    const transformation = d3.event.transform;
+
+    const rightEdge = Math.abs(transformation.x) / transformation.k + width / transformation.k;
+    const bottomEdge = Math.abs(transformation.y) / transformation.k + height / transformation.k;
+
+    if (rightEdge > width) {
+      transformation.x = -(width * transformation.k - width);
+    }
+
+    if (bottomEdge > height) {
+      transformation.y = -(height * transformation.k - height);
+    }
+
+    rescaledX = transformation.rescaleX(x);
+    rescaledY = transformation.rescaleY(y);
+
+    xAxisElement.call(xAxis.scale(rescaledX));
+    yAxisElement.call(yAxis.scale(rescaledY));
+
+    linesContainer.selectAll('path')
+      .attr('d', regionId => {
+        return d3.line()
+          .defined(d => d.percent !== 0)
+          .x(d => rescaledX(d.date))
+          .y(d => rescaledY(d.percent))(regions[regionId].data);
+      });
+
+    voronoiGroup
+      .attr('transform', transformation);
+
+    const xPreviewPosition = previewX.range().map(transformation.invertX, transformation)[0];
+    const yPreviewPosition = previewY.range().map(transformation.invertY, transformation)[1];
+
+    currentTransformationValue = transformation.k;
+
+    draggedNode
+      .data([{ x: xPreviewPosition / ratio, y: yPreviewPosition / ratio }])
+      .attr('x', d => d.x)
+      .attr('y', d => d.y)
+      .attr('width', previewWidth / transformation.k)
+      .attr('height', previewHeight / transformation.k);
+  }
+}
+
+</script>
+
+<h2> Insigths </h2>
+
+<ul>
+<li>A partir del año 2015, el valor en miles de pesos de las exportaciones de café es en promedio mayor con relación a los años anteriores en los departamentos de Santander, Huila, Caldas, Bogotá y Risaralda. </li>
+<li> A partir del año 2017 y hasta el año 2018, las exportaciones de Caldas, valle del Cauca y Bogotá han venido presentando una tendencia decreciente.</li>
+<li> A partir de Julio del año 2017, Risaralda ha producido la  mayor cantidad de dinero producto de las exportaciones de café, superando a los departamentos de Risaralda, Huila, Quindio y Antioquia, departamentos que también hacen parte del eje cafetero.
+</ul>
+
+
+
+
+<h2> Visualización 2 </h2>
+
+A continuación, se presenta una visualización 2 que permitirá comparar el valor total (en miles de millones de pesos) correspondiente a las exportaciones de Café por departamento en un año determinado, lo anterior con el objetivo de determinar el departamento que más ha producido dinero por concepto de exportación de café para un año de interés
+
+
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, temporal </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Valor en miles de millones de pesos:</strong> Corresponde al valor totalizado en miles de millones de pesos que proviene de las exportaciones café en un año de interés, esta variable es cuantitativa secuencial</li>
+                    <li> <strong>Departamento: </strong> Corresponde al departamento de donde surge la exportación, este atributo es categórico.</li>
+                    <li><strong> Año: </strong> Corresponde al año en el cual se realizó la exportación de café, esta variable es cuantitativa secuencial, a manera de observación, esta variable será utilizada para la interacción.</li> 
+                </ol>
+            </li>
+        </ul>
+    </li>
+    
+
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Comparar el valor totalizado (en miles de pesos) que provienen de las exportaciones de café en un año de interés (Tamara: Compare ,  features)  </li>
+            <li> <strong>Tarea 2: </strong> Identificar el departamento que más dinero ha producido por concepto de las exportaciones de café en un año en particular (Tamara: Identify, features) </li>
+            <li> <strong>Tarea 3 </strong> Derivar el valor total (en miles depesos) de las exportaciones de café en cada departamento y por año (Tamara: Derive, features)  
+        </ol>
+    </li>
+
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas:  </strong></li>
+                 <ol>
+                  <li><strong> líneas</strong>: Cada línea representará el valor total (medido en miles de millones de pesos) que provienen de las exportaciones por departamento. </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong> Separate key attribute with horizontal position </strong> El atributo departamento se encuentra ubicado horizontalmente </li>
+                    <li> <strong> Express value attribute with aligned vertical position: </strong> El atributo valor miles de pesos se encuentra ubicado verticalmente</li>
+               </ol>
+            </li>
+        </ol>
+        <li> <strong> Interacción: </strong> Es posible seleccionar un año de interés, y poder organizar el gráfico de barras de "mayor a menor" con el objetivo de identificar el departamento con mayor valor producido (medido en miles de pesos) que proviene de las exportaciones de café.</li>   
+    </li>
+
+</ul>
+
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+Seleccione el año: 
+<select id="year"></select>
+
+<input type="checkbox" id="sort">	
+Ordenar 
+
+
+<div id="vis1"> 
+
+<svg id="chart" width="650" height="420"></svg>
+
+
+
+<script>
+
+d3.csv("https://raw.githubusercontent.com/hctorresm/Evolucion-exportaci-n-de-cafe/master/export_cafe_105.csv").then(d => chart(d));
+
+function chart(csv) {
+
+	csv.forEach(function(d) {
+		var dates = d.date.split("-");
+		d.year = dates[0]; d.month = dates[1];
+		d.value = +d.value/1000000;
+		return d;
+	})
+
+	var months = [...new Set(csv.map(d => d.month))],
+		years  = [...new Set(csv.map(d => d.year))];
+
+	var options = d3.select("#year").selectAll("option")
+		.data(years)
+	.enter().append("option")
+		.text(d => d)
+
+	var svg = d3.select("#chart"),
+		margin = {top: 25, bottom: 10, left: 25, right: 25},
+		width = +svg.attr("width") - margin.left - margin.right,
+		height = +svg.attr("height") - margin.top - margin.bottom;
+
+	var x = d3.scaleBand()
+		.range([margin.left, width - margin.right])
+		.padding(0.1)
+		.paddingOuter(0.2)
+	
+	var y = d3.scaleLinear()
+		.range([height - margin.bottom, margin.top])
+
+	var xAxis = g => g
+		.attr("transform", "translate(0," + (height - margin.bottom) + ")")
+		.call(d3.axisBottom(x).tickSizeOuter(0))
+
+	var yAxis = g => g
+		.attr("transform", "translate(" + margin.left + ",0)")
+		.call(d3.axisLeft(y))
+
+	svg.append("g")
+		.attr("class", "x-axis")
+
+	svg.append("g")
+		.attr("class", "y-axis")
+
+	update(d3.select("#year").property("value"), 0)
+
+	function update(year, speed) {
+
+		var data = csv.filter(f => f.year == year)
+	
+		y.domain([0, d3.max(data, d => d.value)]).nice()
+
+		svg.selectAll(".y-axis").transition().duration(speed)
+			.call(yAxis);
+
+		data.sort(d3.select("#sort").property("checked")
+			? (a, b) => b.value - a.value
+			: (a, b) => months.indexOf(a.month) - months.indexOf(b.month))
+
+		x.domain(data.map(d => d.month))
+
+		svg.selectAll(".x-axis").transition().duration(speed)
+			.call(xAxis)
+
+		var bar = svg.selectAll(".bar")
+			.data(data, d => d.month)
+
+		bar.exit().remove();
+
+		bar.enter().append("rect")
+			.attr("class", "bar")
+			.attr("fill", "steelblue")
+			.attr("width", x.bandwidth())
+			.merge(bar)
+		.transition().duration(speed)
+			.attr("x", d => x(d.month))
+			.attr("y", d => y(d.value))
+			.attr("height", d => y(0) - y(d.value))
+	}
+
+	chart.update = update;
+}
+
+var select = d3.select("#year")
+	.style("border-radius", "5px")
+	.on("change", function() {
+		chart.update(this.value, 750)
+	})
+
+var checkbox = d3.select("#sort")
+	.style("margin-left", "45%")
+	.on("click", function() {
+		chart.update(select.property("value"), 750)
+	})
+
+</script>
+
+</div>
+
+
+
+
+<h2> Insigths </h2>
+
+<ul>
+<li>En los años 2017 y 2018, Bogotá ha producido menos dinero que los otros departamentos producto de las exportaciones de Café departamentos, por otra parte, en el año 2016, Bogotá exportó mayor café que el departamento del Tolima, Valle del cauca, Santander y Cauca. </li>
+</ul>
+
+
+
+
+
+<h2> Referencias </h2>
+Los códigos utilizados para estas visualizaciones fueron tomados y adaptados de las siguientes páginas
+<ul>
+	<li> https://itnext.io/d3-js-in-all-its-glory-7066601aa16b </li>
+  <li> https://bl.ocks.org/LemoNode/73dbb9d6a144476565386f48a2df2e3b?fbclid=IwAR2C_3pILd3DWWBqaz6LTzG_8xFKxyUU2nvwJacPuuxdx8VtCnc9i3cgIps </li>
+
+
+	</ul>
+
+
+</body>
+</html>
