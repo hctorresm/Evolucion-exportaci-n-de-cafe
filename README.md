@@ -6,12 +6,11 @@ Evolucion-exportaci-n-de-cafe
 
 # Descripción del proyecto
 
-se propone construir una visualización interactiva con el fin de estudiar a profundidad el comportamiento de las exportaciones de Café desde el año 2010 hasta el año 2018 con el objetivo de generar insights
+Se propone construir una visualización interactiva con el fin de estudiar a profundidad el comportamiento de las exportaciones de Café desde el año 2010 hasta el año 2018 con el objetivo de generar insights
 
 # Tecnologías usadas
 
-IDE: Sublime text
-Javascript d3 v5.0
+IDE: Sublime text - Javascript d3 v5.0
 
 
 # Link de la página
@@ -23,7 +22,7 @@ https://docs.google.com/presentation/d/e/2PACX-1vSUMwq71Sd0N6KsECg0b3NFx9hGKS4Yw
 
 # Recomendación
 
-abrir con google chrome
+Abrir con google chrome
 
 # Autor
 
@@ -35,4 +34,4 @@ https://www.linkedin.com/in/harry-cristhian-torres-moreno-5bb53370/
 
 # Licencia
 
-Este proyecto se realiza bajo la licencia MIT
+Este proyecto se realiza bajo la licencia MIT.
